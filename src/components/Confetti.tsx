@@ -15,7 +15,7 @@ function Confetti({ passed }: { passed: boolean }) {
       spread: 100,
       origin: { y: 0 },
     });
-    
+
     setTimeout(() => {
       confetti({
         ...defaults,

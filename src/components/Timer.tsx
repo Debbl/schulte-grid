@@ -1,4 +1,3 @@
-import type { Ref } from "react";
 import {
   forwardRef,
   useEffect,
@@ -14,6 +13,7 @@ export interface TimerRef {
 }
 interface Props {}
 
+// eslint-disable-next-line react/display-name
 export const Timer = forwardRef<TimerRef, Props>((_props, ref) => {
   const [time, setTime] = useState("00:00:000");
   const interval = useRef<number>();
@@ -35,7 +35,7 @@ export const Timer = forwardRef<TimerRef, Props>((_props, ref) => {
     clear();
   }
 
-  useImperativeHandle(ref, () => ({ start, stop }), []);
+  useImperativeHandle(ref, () => ({ start, stop }));
 
   useEffect(() => {
     return () => clear();

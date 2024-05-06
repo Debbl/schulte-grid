@@ -1,7 +1,7 @@
-import { SVGProps } from "react";
+import type { SVGProps } from "react";
 
 export function MaterialSymbolsRestartAltRounded(
-  props: SVGProps<SVGSVGElement>
+  props: SVGProps<SVGSVGElement>,
 ) {
   return (
     <svg

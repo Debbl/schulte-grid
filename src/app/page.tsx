@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Confetti from "~/components/Confetti";
-import { Timer, TimerRef } from "~/components/Timer";
+import type { TimerRef } from "~/components/Timer";
+import { Timer } from "~/components/Timer";
 import { MaterialSymbolsRestartAltRounded } from "~/icons";
 import { cn } from "~/lib/cn";
 import { shuffle } from "~/utils";
@@ -18,7 +19,7 @@ const BORDER = Array.from(
   (_, i) => ({
     count: i + 1,
     revealed: false,
-  })
+  }),
 );
 
 export default function Home() {
@@ -36,7 +37,7 @@ export default function Home() {
 
   useEffect(() => {
     setBorder(shuffle(border));
-  }, []);
+  }, [border]);
 
   function reset() {
     setCurrentCount(0);
@@ -50,7 +51,7 @@ export default function Home() {
 
     if (count === currentCount + 1) {
       const newBorder = border.map((cell) =>
-        cell.count === count ? { ...cell, revealed: true } : cell
+        cell.count === count ? { ...cell, revealed: true } : cell,
       );
       setBorder(newBorder);
       setCurrentCount(count);
@@ -60,17 +61,17 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col h-screen items-center justify-center gap-y-4">
+    <main className="flex h-screen flex-col items-center justify-center gap-y-4">
       <Confetti passed={passed} />
       <h1 className="text-xl font-medium">Schulte Grid</h1>
       <div className="flex items-center gap-x-4">
         <Timer ref={timerRef} />
         <MaterialSymbolsRestartAltRounded
-          className="cursor-pointer size-5 hover:bg-gray-200 rounded-sm"
+          className="size-5 cursor-pointer rounded-sm hover:bg-gray-200"
           onClick={() => reset()}
         />
       </div>
-      <div className="grid grid-cols-5 gap-1 select-none">
+      <div className="grid select-none grid-cols-5 gap-1">
         {border.map(({ count, revealed }) => (
           <div
             className={cn(
@@ -78,7 +79,7 @@ export default function Home() {
               "size-16 sm:size-20",
               "border cursor-pointer rounded-sm bg-white text-black",
               revealed && "animate-revealed",
-              count === faultySteps.at(-1) && "animate-error"
+              count === faultySteps.at(-1) && "animate-error",
             )}
             key={count}
             onClick={() => handleClick(count)}
