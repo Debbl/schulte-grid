@@ -11,15 +11,18 @@ export interface TimerRef {
   start: () => () => void;
   stop: () => void;
   reset: () => void;
+  isStarted: boolean;
 }
 interface Props {}
 
 // eslint-disable-next-line react/display-name
 export const Timer = forwardRef<TimerRef, Props>((_props, ref) => {
   const [time, setTime] = useState("00:00:000");
+  const [isStarted, setIsStarted] = useState(false);
   const interval = useRef<number>();
 
   function clear() {
+    setIsStarted(false);
     clearInterval(interval.current);
   }
 
@@ -28,6 +31,7 @@ export const Timer = forwardRef<TimerRef, Props>((_props, ref) => {
     interval.current = setInterval(() => {
       setTime(format(Date.now() - start, "mm:ss:SSS"));
     }, 10) as any as number;
+    setIsStarted(true);
 
     return () => clear();
   }
@@ -40,7 +44,7 @@ export const Timer = forwardRef<TimerRef, Props>((_props, ref) => {
     clear();
   }
 
-  useImperativeHandle(ref, () => ({ start, stop, reset }));
+  useImperativeHandle(ref, () => ({ start, stop, reset, isStarted }));
 
   useEffect(() => {
     return () => clear();

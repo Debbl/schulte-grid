@@ -29,6 +29,7 @@ export default function Home() {
     start: () => () => {},
     stop: () => {},
     reset: () => {},
+    isStarted: false,
   });
   const [border, setBorder] = useState<Cell[]>(BORDER);
 
@@ -48,13 +49,15 @@ export default function Home() {
   }
 
   function handleClick(count: number) {
-    if (count === 1) timerRef.current.start();
-    if (count === 25) timerRef.current.stop();
+    if (count === 1 && !timerRef.current.isStarted) timerRef.current.start();
 
     if (count === currentCount + 1) {
-      const newBorder = border.map((cell) =>
-        cell.count === count ? { ...cell, revealed: true } : cell,
-      );
+      if (count === 25) timerRef.current.stop();
+
+      const newBorder = border.map((cell) => ({
+        ...cell,
+        revealed: cell.count === count,
+      }));
       setBorder(newBorder);
       setCurrentCount(count);
     } else {
