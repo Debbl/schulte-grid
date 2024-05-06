@@ -67,7 +67,7 @@ export default function Home() {
       <div className="flex items-center gap-x-4">
         <Timer ref={timerRef} />
         <MaterialSymbolsRestartAltRounded
-          className="size-5 cursor-pointer rounded-sm hover:bg-gray-200"
+          className="size-5 cursor-pointer select-none rounded-sm hover:bg-gray-200"
           onClick={() => reset()}
         />
       </div>
