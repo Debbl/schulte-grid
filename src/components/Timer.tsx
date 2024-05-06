@@ -8,8 +8,9 @@ import {
 import { format } from "date-fns";
 
 export interface TimerRef {
-  start: () => void;
+  start: () => () => void;
   stop: () => void;
+  reset: () => void;
 }
 interface Props {}
 
@@ -31,11 +32,15 @@ export const Timer = forwardRef<TimerRef, Props>((_props, ref) => {
     return () => clear();
   }
 
+  function reset() {
+    setTime("00:00:000");
+  }
+
   function stop() {
     clear();
   }
 
-  useImperativeHandle(ref, () => ({ start, stop }));
+  useImperativeHandle(ref, () => ({ start, stop, reset }));
 
   useEffect(() => {
     return () => clear();

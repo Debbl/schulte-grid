@@ -26,8 +26,9 @@ export default function Home() {
   const [currentCount, setCurrentCount] = useState(0);
   const [faultySteps, setFaultySteps] = useState<number[]>([]);
   const timerRef = useRef<TimerRef>({
-    start: () => {},
+    start: () => () => {},
     stop: () => {},
+    reset: () => {},
   });
   const [border, setBorder] = useState<Cell[]>(BORDER);
 
@@ -42,7 +43,8 @@ export default function Home() {
   function reset() {
     setCurrentCount(0);
     setFaultySteps([]);
-    setBorder(shuffle(border));
+    setBorder(shuffle(BORDER));
+    timerRef.current.reset();
   }
 
   function handleClick(count: number) {
