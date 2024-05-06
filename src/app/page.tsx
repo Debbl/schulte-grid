@@ -36,8 +36,8 @@ export default function Home() {
   }, [currentCount]);
 
   useEffect(() => {
-    setBorder(shuffle(border));
-  }, [border]);
+    setBorder(shuffle(BORDER));
+  }, []);
 
   function reset() {
     setCurrentCount(0);
