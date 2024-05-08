@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Confetti from "~/components/Confetti";
 import type { TimerRef } from "~/components/Timer";
 import { Timer } from "~/components/Timer";
-import { MaterialSymbolsRestartAltRounded } from "~/icons";
+import { GrommetIconsGithub, MaterialSymbolsRestartAltRounded } from "~/icons";
 import { cn } from "~/lib/cn";
 import { shuffle } from "~/utils";
 
@@ -75,6 +75,13 @@ export default function Home() {
           className="size-5 cursor-pointer select-none rounded-sm hover:bg-gray-200"
           onClick={() => reset()}
         />
+        <a
+          href="https://github.com/Debbl/schulte-grid"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <GrommetIconsGithub className="cursor-pointer" />
+        </a>
       </div>
       <div className="grid select-none grid-cols-5 gap-1">
         {border.map(({ count, revealed }) => (
