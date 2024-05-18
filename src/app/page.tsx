@@ -1,4 +1,5 @@
 "use client";
+import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Confetti from "~/components/Confetti";
 import type { TimerRef } from "~/components/Timer";
@@ -32,6 +33,7 @@ export default function Home() {
     isStarted: false,
   });
   const [border, setBorder] = useState<Cell[]>(BORDER);
+  const isFaulty = useRef(false);
 
   const passed = useMemo(() => {
     return currentCount === 25;
@@ -49,24 +51,29 @@ export default function Home() {
   }
 
   function handleClick(count: number) {
-    if (count === 1 && !timerRef.current.isStarted) timerRef.current.start();
+    if (count === 1 && !timerRef.current.isStarted) {
+      timerRef.current.start();
+      setFaultySteps([]);
+    }
 
     if (count === currentCount + 1) {
+      isFaulty.current = false;
       if (count === 25) timerRef.current.stop();
 
       const newBorder = border.map((cell) => ({
         ...cell,
-        revealed: cell.count === count,
+        revealed: cell.count <= count,
       }));
       setBorder(newBorder);
       setCurrentCount(count);
     } else {
+      isFaulty.current = true;
       setFaultySteps([...faultySteps, count]);
     }
   }
 
   return (
-    <main className="flex h-screen flex-col items-center justify-center gap-y-4">
+    <main className="flex h-screen flex-col items-center justify-center gap-y-4 bg-gray-50">
       <Confetti passed={passed} />
       <h1 className="text-xl font-medium">Schulte Grid</h1>
       <div className="flex items-center gap-x-4">
@@ -85,19 +92,32 @@ export default function Home() {
       </div>
       <div className="grid select-none grid-cols-5 gap-1">
         {border.map(({ count, revealed }) => (
-          <div
+          <motion.div
+            initial={{ opacity: 1, backgroundColor: "#fff" }}
+            whileTap={{ scale: 0.8, opacity: 0.7 }}
+            animate={{
+              opacity: revealed ? [1, 0.3, 0.9] : 1,
+              backgroundColor:
+                count === faultySteps.at(-1)
+                  ? ["#f87171", "#fecaca", "#fff"]
+                  : count === currentCount && !isFaulty.current
+                    ? ["#4ade80", "#bbf7d0", "#fff"]
+                    : "#fff",
+            }}
+            transition={{
+              duration: 2,
+              times: [0, 0.8, 1],
+            }}
             className={cn(
               "flex justify-center items-center",
               "size-16 sm:size-20",
               "border cursor-pointer rounded-sm bg-white text-black",
-              revealed && "animate-revealed",
-              count === faultySteps.at(-1) && "animate-error",
             )}
             key={count}
             onClick={() => handleClick(count)}
           >
             {count}
-          </div>
+          </motion.div>
         ))}
       </div>
     </main>
