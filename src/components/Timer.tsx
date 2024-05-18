@@ -37,6 +37,7 @@ export const Timer = forwardRef<TimerRef, Props>((_props, ref) => {
   }
 
   function reset() {
+    clear();
     setTime("00:00:000");
   }
 
